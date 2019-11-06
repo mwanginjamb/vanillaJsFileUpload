@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>Vanilla File Upload</title>
+        <style>
+
+        </style>
+    </head>
+    <body>
+        <form id="upForm" enctype="multipart/form-data">
+            <legend>Ajax form Upload</legend>
+
+            <label for="uptext">Additional Fields</label>
+            <input type="text" id="content">
+
+
+            <label for="upFile">Choose an Image to upload</label>
+            <input type="file" id="file"  name="file" multiple ><br>
+
+           
+            <input type="submit" value="Upload">
+        </form>
+    </body>
+    <script>
+
+        document.querySelector('#upForm').addEventListener('submit',(e)=> {
+            e.preventDefault();
+            console.log(e);
+
+            var form = e.currentTarget;
+            var files = form.querySelector('input[type=file]').files;                       
+            var content = form.querySelector('#content').value;
+
+            formData = new FormData();
+
+            for(let i=0; i < files.length; i++){
+                formData.append("file"+i,files[i]);
+            }
+            
+            formData.append("content",content);
+
+           fetch('./upload.php',{
+               method: "POST",
+               body: formData
+           })
+           .then(res => console.log(res))
+           .catch(err => console.log(err));
+        });
+        
+    </script>
+</html>
