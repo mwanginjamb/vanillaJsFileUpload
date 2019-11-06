@@ -23,27 +23,30 @@
     <script>
 
         document.querySelector('#upForm').addEventListener('submit',(e)=> {
-            e.preventDefault();
+            e.preventDefault();//prevent normal behaviour of a submit button, allows you to do your own shit
             console.log(e);
 
+            //Get form context
             var form = e.currentTarget;
-            var files = form.querySelector('input[type=file]').files;                       
-            var content = form.querySelector('#content').value;
+            var files = form.querySelector('input[type=file]').files;  //select the file dom element                     
+            var content = form.querySelector('#content').value;// select the content dom element
 
-            formData = new FormData();
+            formData = new FormData(); //create a form data object
 
+            //loop over every selected file appending it to the formdata object
             for(let i=0; i < files.length; i++){
                 formData.append("file"+i,files[i]);
             }
-            
+            //Append text content to formdata object
             formData.append("content",content);
 
+            //use fetch api to send ajax request to php script (upload.php)
            fetch('./upload.php',{
                method: "POST",
                body: formData
            })
-           .then(res => console.log(res))
-           .catch(err => console.log(err));
+           .then(res => console.log(res))//get request response
+           .catch(err => console.log(err)); //get errors if they exist
         });
         
     </script>
